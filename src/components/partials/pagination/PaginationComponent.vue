@@ -34,11 +34,20 @@ export default {
       type: Number,
       default: 10,
     },
+    currentPage: {
+      type: Number,
+      default: 1,
+    },
   },
   data() {
     return {
       page: 1,
     };
+  },
+  watch: {
+    currentPage(value) {
+      this.page = value;
+    },
   },
   methods: {
     handleChangePage(page) {

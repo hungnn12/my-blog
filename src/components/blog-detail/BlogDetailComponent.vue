@@ -38,7 +38,6 @@ export default {
   methods: {
     async getBlogDetail() {
       let endpoint = `${this.appConfig.apiUrl}${this.appConfig.api.blogs}/${this.blogId}`;
-      // this.$store.commit(SET_LOADING_MUTATION, true);
       let { data, error } = await this.httpRequest.get(endpoint);
       if (error) {
         return;
@@ -46,7 +45,6 @@ export default {
       if (data && data.data) {
         this.blogDetail = data.data;
       }
-      // this.$store.commit(SET_LOADING_MUTATION, false);
     },
     gotoHome() {
       this.$router.push("/blogs");

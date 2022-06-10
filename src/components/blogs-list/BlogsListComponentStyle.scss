@@ -2,3 +2,10 @@
 .cursor-pointer {
   cursor: pointer;
 }
+.sort-by {
+  display: flex;
+  align-items: center;
+  .form-select {
+    width: 150px;
+  }
+}

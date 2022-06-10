@@ -1,13 +1,13 @@
 <template>
-  <add-blog></add-blog>
+  <blog-form-component></blog-form-component>
 </template>
 
 <script>
-import AddBlog from "@/components/add-blog/AddBlogComponent.vue";
+import BlogFormComponent from "@/components/blog-form/BlogFormComponent.vue";
 export default {
-  name: "AddBlogPage",
+  name: "EditBlogPage",
   components: {
-    AddBlog,
+    BlogFormComponent,
   },
 };
 </script>

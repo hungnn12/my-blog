@@ -71,7 +71,8 @@
       </div>
     </form>
     <div class="alert alert-success" v-if="isSuccess">
-      <strong>Added Blog Success!</strong>
+      <strong v-if="!blogId">Added Blog Success!</strong>
+      <strong v-else>Edited Blog Success!</strong>
     </div>
   </div>
 </template>
@@ -80,7 +81,7 @@ import BlogService from "@/services/blog.service";
 import { required } from "vuelidate/lib/validators";
 import Vue from "vue";
 export default Vue.extend({
-  name: "AddBlogComponent",
+  name: "BlogFormComponent",
   data() {
     return {
       httpRequest: new BlogService(this.$store),
@@ -110,7 +111,6 @@ export default Vue.extend({
   methods: {
     async getBlogDetail() {
       let endpoint = `${this.appConfig.apiUrl}${this.appConfig.api.blogs}/${this.blogId}`;
-      // this.$store.commit(SET_LOADING_MUTATION, true);
       let { data, error } = await this.httpRequest.get(endpoint);
       if (error) {
         return;
@@ -122,7 +122,6 @@ export default Vue.extend({
         };
         this.fileImage = data.data.image.url;
       }
-      // this.$store.commit(SET_LOADING_MUTATION, false);
     },
     async handleSubmit() {
       this.submitted = true;
@@ -136,13 +135,23 @@ export default Vue.extend({
         ...this.blog,
         image: this.fileImage,
       };
-      const endpoint = `${this.appConfig.apiUrl}${this.appConfig.api.blogs}`;
-      const { data, error } = await this.httpRequest.post(endpoint, params);
+      // for edit
+      let response = {
+        data: {},
+        error: {},
+      };
+      if (this.blogId) {
+        const endpoint = `${this.appConfig.apiUrl}${this.appConfig.api.blogs}/${this.blogId}`;
+        response = await this.httpRequest.put(endpoint, params);
+      } else {
+        const endpoint = `${this.appConfig.apiUrl}${this.appConfig.api.blogs}`;
+        response = await this.httpRequest.post(endpoint, params);
+      }
 
-      if (error) {
+      if (response.error) {
         return;
       }
-      if (data && data.data) {
+      if (response.data && response.data.data) {
         this.isSuccess = true;
       }
     },
@@ -172,5 +181,5 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "./AddBlogComponentStyle.scss";
+@import "./BlogFormComponentStyle.scss";
 </style>
